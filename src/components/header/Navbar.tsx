@@ -1,8 +1,14 @@
 import { Link, Outlet } from "react-router-dom"
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from "../../store/store";
+import { signOut } from "../../store/authSlice";
 
 const Navbar = () => {
-    const signOut = () => {
-        console.log("SignOut")
+    const isAuthenticated = useSelector((state: RootState) => state.authentication.isAuthenticated);
+    const dispatch = useDispatch();
+    const logOut = () => {
+        console.log("SignOut");
+        dispatch(signOut())
     }
     return (
         <div>
@@ -10,17 +16,21 @@ const Navbar = () => {
                 <li>
                     <Link to="/">Home</Link>
                 </li>
-                <li>
-                    <Link to="/profile">My Profile</Link>
-                </li>
+                {isAuthenticated && (
+                    <li>
+                        <Link to="/profile">My Profile</Link>
+                    </li>
+                )}
 
-                <li>
-                    <Link to="/login">Sign In</Link>
-                </li>
-
-                <li>
-                    <Link to="/" onClick={signOut}>Sign Out</Link>
-                </li>
+                {isAuthenticated ? (
+                    <li>
+                        <Link to="/" onClick={logOut}>Sign Out</Link>
+                    </li>
+                ) : (
+                    <li>
+                        <Link to="/login">Sign In</Link>
+                    </li>
+                )}
             </ul>
             <Outlet />
         </div>
