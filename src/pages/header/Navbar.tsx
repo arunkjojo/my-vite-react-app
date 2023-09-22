@@ -2,6 +2,7 @@ import { Outlet, redirect } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
 import { signIn, signOut } from "../../store/authSlice";
 import { RootState } from "../../store/store";
+import Button from "../../components/Button/Button";
 
 const Navbar = () => {
     const isAuthenticated = useSelector((state: RootState) => state.authentication.isAuthenticated);
@@ -16,16 +17,12 @@ const Navbar = () => {
         <div>
             <ul>
                 <li>
-                    <button onClick={() => redirect('/')}>
-                        Home
-                    </button>
+                    <Button size="small" buttonType="button" label="Home" onClick={() => redirect('/')} />
                 </li>
                 {isAuthenticated ? (
                     <>
                         <li>
-                            <button onClick={() => redirect('/profile')}>
-                                My Profile
-                            </button>
+                            <Button size="small" buttonType="button" label="My Profile" onClick={() => redirect('/profile')} />
                         </li>
                         <li>
                             <button onClick={logOut} type="button">
