@@ -1,34 +1,43 @@
-import { Link, Outlet } from "react-router-dom"
+import { Outlet, redirect } from "react-router-dom"
 import { useSelector, useDispatch } from 'react-redux';
+import { signIn, signOut } from "../../store/authSlice";
 import { RootState } from "../../store/store";
-import { signOut } from "../../store/authSlice";
 
 const Navbar = () => {
     const isAuthenticated = useSelector((state: RootState) => state.authentication.isAuthenticated);
     const dispatch = useDispatch();
     const logOut = () => {
-        console.log("SignOut");
         dispatch(signOut())
+    }
+    const logIn = () => {
+        dispatch(signIn())
     }
     return (
         <div>
             <ul>
                 <li>
-                    <Link to="/">Home</Link>
+                    <button onClick={() => redirect('/')}>
+                        Home
+                    </button>
                 </li>
-                {isAuthenticated && (
-                    <li>
-                        <Link to="/profile">My Profile</Link>
-                    </li>
-                )}
-
                 {isAuthenticated ? (
-                    <li>
-                        <Link to="/" onClick={logOut}>Sign Out</Link>
-                    </li>
+                    <>
+                        <li>
+                            <button onClick={() => redirect('/profile')}>
+                                My Profile
+                            </button>
+                        </li>
+                        <li>
+                            <button onClick={logOut} type="button">
+                                Sign Out
+                            </button>
+                        </li>
+                    </>
                 ) : (
                     <li>
-                        <Link to="/login">Sign In</Link>
+                        <button onClick={logIn} type="button">
+                            Sign In
+                        </button>
                     </li>
                 )}
             </ul>

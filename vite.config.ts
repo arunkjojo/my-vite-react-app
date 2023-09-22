@@ -1,6 +1,10 @@
+/// <reference types="vitest" />
+/// <reference types="vite/client" />
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
+
 const manifest: Partial<VitePWAOptions> = {
   registerType: "prompt",
   includeAssets: [],
@@ -33,8 +37,15 @@ const manifest: Partial<VitePWAOptions> = {
     orientation: "portrait"
   }
 }
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "./",
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/setupTest.ts']
+  },
+
   plugins: [react(), VitePWA(manifest)],
 });
